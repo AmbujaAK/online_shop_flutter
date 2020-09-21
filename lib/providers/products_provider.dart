@@ -37,10 +37,28 @@ class ProductsProvider with ChangeNotifier {
     ),
   ];
 
-  List<Product> get items => [..._items];
+  var _showFavoriteOnly = false;
+
+  List<Product> get items {
+    if (_showFavoriteOnly) {
+      return _items.where((prod) => prod.isFavorite).toList();
+    }
+
+    return [..._items];
+  }
 
   void addProduct(Product item) {
     _items.add(item);
+    notifyListeners();
+  }
+
+  void showFavoritesOnly() {
+    _showFavoriteOnly = true;
+    notifyListeners();
+  }
+
+  void showAll() {
+    _showFavoriteOnly = false;
     notifyListeners();
   }
 
