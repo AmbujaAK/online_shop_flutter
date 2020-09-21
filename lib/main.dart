@@ -26,15 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Online Shop'),
-      ),
-      body: ProductsOverviewScreen(),
-    );
-  }
-}
