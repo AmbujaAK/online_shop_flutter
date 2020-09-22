@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:online_shop_flutter/providers/cart.dart' show Cart;
-import 'package:online_shop_flutter/providers/orders.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
+import '../providers/orders.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your carts'),
+        title: Text('Your Cart'),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Card(
             margin: EdgeInsets.all(15),
             child: Padding(
               padding: EdgeInsets.all(8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text(
                     'Total',
                     style: TextStyle(fontSize: 20),
@@ -29,25 +31,24 @@ class CartScreen extends StatelessWidget {
                   Spacer(),
                   Chip(
                     label: Text(
-                      '\$${cart.totalAmount}',
+                      '\$${cart.totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
-                          color: Theme.of(context)
-                              .primaryTextTheme
-                              .headline6
-                              .color),
+                        color: Theme.of(context).primaryTextTheme.title.color,
+                      ),
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   FlatButton(
+                    child: Text('ORDER NOW'),
                     onPressed: () {
                       Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(), cart.totalAmount);
-
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
                       cart.clear();
                     },
-                    child: Text('ORDER NOW'),
                     textColor: Theme.of(context).primaryColor,
-                  ),
+                  )
                 ],
               ),
             ),
@@ -56,15 +57,15 @@ class CartScreen extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemCount: cart.items.length,
-              itemBuilder: (context, index) => CartItem(
-                productId: cart.items.keys.toList()[index],
-                id: cart.items.values.toList()[index].id,
-                title: cart.items.values.toList()[index].title,
-                quantity: cart.items.values.toList()[index].quantity,
-                price: cart.items.values.toList()[index].price,
-              ),
+              itemBuilder: (ctx, i) => CartItem(
+                    cart.items.values.toList()[i].id,
+                    cart.items.keys.toList()[i],
+                    cart.items.values.toList()[i].price,
+                    cart.items.values.toList()[i].quantity,
+                    cart.items.values.toList()[i].title,
+                  ),
             ),
-          ),
+          )
         ],
       ),
     );

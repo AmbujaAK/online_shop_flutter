@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:online_shop_flutter/providers/cart.dart';
+
+import './cart.dart';
 
 class OrderItem {
   final String id;
@@ -28,8 +29,8 @@ class Orders with ChangeNotifier {
       OrderItem(
         id: DateTime.now().toString(),
         amount: total,
-        products: cartProducts,
         dateTime: DateTime.now(),
+        products: cartProducts,
       ),
     );
     notifyListeners();
